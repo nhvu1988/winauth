@@ -195,6 +195,20 @@ namespace WinAuth
 			bool changed = false;
 			try
 			{
+				var data = File.ReadAllBytes(configFile);
+				if (data.Length == 0 || data[0] == 0)
+				{
+					// switch to backup
+					if (File.Exists(configFile + ".bak") == true)
+					{
+						data = File.ReadAllBytes(configFile + ".bak");
+						if (data.Length != 0 && data[0] != 0)
+						{
+							File.WriteAllBytes(configFile, data);
+						}
+					}
+				}
+
 				using (FileStream fs = new FileStream(configFile, FileMode.Open, FileAccess.Read))
 				{
 					XmlReader reader = XmlReader.Create(fs);
@@ -219,7 +233,7 @@ namespace WinAuth
 					SaveConfig(config);
 				}
 			}
-			catch (EncrpytedSecretDataException )
+			catch (EncryptedSecretDataException )
 			{
 				// we require a password
 				throw;
@@ -307,18 +321,24 @@ namespace WinAuth
 							throw new ApplicationException("Zero data when saving config");
 						}
 
-						using (FileStream fs = new FileStream(config.Filename, FileMode.Create, FileAccess.Write, FileShare.None))
-						{
-							fs.Write(data, 0, data.Length);
-							fs.Flush();
-						}
+						var tempfile = config.Filename + ".tmp";
+
+						File.WriteAllBytes(tempfile, data);
 
 						// read it back
-						var verify = File.ReadAllBytes(config.Filename);
+						var verify = File.ReadAllBytes(tempfile);
 						if (verify.Length != data.Length || verify.SequenceEqual(data) == false)
 						{
 							throw new ApplicationException("Save config doesn't compare with memory: " + Convert.ToBase64String(data));
 						}
+
+						// move it to old file
+						File.Delete(config.Filename + ".bak");
+            if (File.Exists(config.Filename) == true)
+            {
+              File.Move(config.Filename, config.Filename + ".bak");
+            }
+						File.Move(tempfile, config.Filename);
 					}
 					catch (UnauthorizedAccessException )
 					{
@@ -357,8 +377,8 @@ namespace WinAuth
 			{
 				return;
 			}
-
-			using (SHA256 sha = new SHA256Managed())
+      
+			using (HashAlgorithm sha = Authenticator.SafeHasher("SHA256"))
 			{
 				// get a hash based on the authenticator key
 				string authkey = Convert.ToBase64String(sha.ComputeHash(Encoding.UTF8.GetBytes(wa.AuthenticatorData.SecretData)));
@@ -561,6 +581,14 @@ namespace WinAuth
 							continue;
 						}
 
+            // bug if there is a hash before ?
+            var hash = line.IndexOf("#");
+            var qm = line.IndexOf("?");
+            if (hash != -1 && hash < qm)
+            {
+              line = line.Substring(0, hash) + "%23" + line.Substring(hash + 1);
+            }
+
 						// parse and validate URI
 						var uri = new Uri(line);
 
@@ -661,15 +689,37 @@ namespace WinAuth
 								auth.Issuer = issuer;
 							}
 						}
-						//
+
+						int period = 0;
+						int.TryParse(query["period"], out period);
+						if (period != 0)
+						{
+							auth.Period = period;
+						}
+
 						int digits = 0;
 						int.TryParse(query["digits"], out digits);
 						if (digits != 0)
 						{
 							auth.CodeDigits = digits;
 						}
-						//
-						if (label.Length != 0)
+
+            Authenticator.HMACTypes hmactype;
+#if NETFX_3
+            try
+            {
+              hmactype = (WinAuth.Authenticator.HMACTypes)Enum.Parse(typeof(WinAuth.Authenticator.HMACTypes), query["algorithm"], true);
+              auth.HMACType = hmactype;
+            }
+            catch (Exception) { }
+#else
+            if (Enum.TryParse<Authenticator.HMACTypes>(query["algorithm"], true, out hmactype) == true)
+            {
+              auth.HMACType = hmactype;
+            }
+#endif
+            //
+            if (label.Length != 0)
 						{
 							importedAuthenticator.Name = (issuer.Length != 0 ? issuer + " (" + label + ")" : label);
 						}

@@ -623,7 +623,7 @@ namespace WinAuth
 					{
 						if (response.IndexOf("want_more") != -1 && finalizeresponse.SelectToken("response.want_more").Value<bool>() == true)
 						{
-							ServerTimeDiff += 30000L;
+							ServerTimeDiff += ((long)this.Period * 1000L);
 							retries++;
 							continue;
 						}
@@ -631,7 +631,7 @@ namespace WinAuth
 						break;
 					}
 
-					ServerTimeDiff += 30000L;
+					ServerTimeDiff += ((long)this.Period * 1000L);
 					retries++;
 				}
 				if (state.RequiresActivation == true)
@@ -671,7 +671,7 @@ namespace WinAuth
 			// check if data is protected
 			if (this.SecretKey == null && this.EncryptedData != null)
 			{
-				throw new EncrpytedSecretDataException();
+				throw new EncryptedSecretDataException();
 			}
 
 			// don't retry for 5 minutes
@@ -717,7 +717,7 @@ namespace WinAuth
 			{
 				if (interval > 0)
 				{
-					ServerTimeDiff = (interval * 30000L) - CurrentTime;
+					ServerTimeDiff = (interval * ((long)this.Period * 1000L)) - CurrentTime;
 				}
 				else
 				{

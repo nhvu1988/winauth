@@ -1,21 +1,23 @@
-Authenticator/Resources/
-Net3.5/bin/
-Net3.5/obj/
-Net3.5/packages/
-Net3.5/x86/bin/
-Net3.5/x86/obj/
-Net4.5/bin/
-Net4.5/obj/
-Net4.5/packages/
-Third Party/InputSimulator/bin/
-Third Party/InputSimulator/obj/
-Third Party/MetroFramework/MetroFramework.Design/bin/
-Third Party/MetroFramework/MetroFramework.Design/obj/
-Third Party/MetroFramework/MetroFramework/bin/
-Third Party/MetroFramework/MetroFramework/obj/
-WinAuth.YubiKey/Debug/
-WinAuth.YubiKey/x64/Debug/
-*.user
-Net4.5/WinAuth.VC.db
-Net4.5/.vs/WinAuth/v14/.suo
-Net3.5/.vs/WinAuth-Net3.5/v14/.suo
+*.VC.db
+*.suo
+*.sdf
+*.opensdf
+*.csproj.user
+*.vcxproj.user
+WinAuth.YubiKey/Debug
+WinAuth.YubiKey/Release
+WinAuth.YubiKey/x64/Debug
+WinAuth.YubiKey/x64/Release
+Authenticator/Resources
+Net*/.vs
+Net*/bin
+Net*/obj
+Net*/x86
+Net*/x64
+Net*/packages
+Third Party/InputSimulator/bin
+Third Party/InputSimulator/obj
+Third Party/MetroFramework/MetroFramework.Design/bin
+Third Party/MetroFramework/MetroFramework.Design/obj
+Third Party/MetroFramework/MetroFramework/bin
+Third Party/MetroFramework/MetroFramework/obj

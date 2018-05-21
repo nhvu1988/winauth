@@ -35,7 +35,8 @@ namespace WinAuth
 			Microsoft,
 			RFC6238_TIME,
 			RFC6238_COUNTER,
-			Steam
+			Steam,
+			OktaVerify
 		}
 
 		public string Name;

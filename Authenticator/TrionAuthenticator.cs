@@ -264,7 +264,7 @@ namespace WinAuth
 			// check if data is protected
 			if (this.SecretKey == null && this.EncryptedData != null)
 			{
-				throw new EncrpytedSecretDataException();
+				throw new EncryptedSecretDataException();
 			}
 
 			// don't retry for 5 minutes
@@ -329,7 +329,7 @@ namespace WinAuth
 			{
 				if (interval > 0)
 				{
-					ServerTimeDiff = (interval * 30000L) - CurrentTime;
+					ServerTimeDiff = (interval * ((long)this.Period * 1000L)) - CurrentTime;
 				}
 				else
 				{

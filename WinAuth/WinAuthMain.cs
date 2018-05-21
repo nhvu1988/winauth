@@ -56,18 +56,13 @@ namespace WinAuth
     /// </summary>
     public const string WINAUTHBACKUP_EMAIL = "winauth@gmail.com";
 
-		/// <summary>
-		/// URL to post error reports
-		/// </summary>
-		public const string WINAUTH_BUG_URL = "https://winauth.com/bug";
-
-		/// <summary>
-		/// URL to get latest information
-		/// </summary>
+    /// <summary>
+    /// URL to get latest information
+    /// </summary>
 #if BETA
-		public const string WINAUTH_UPDATE_URL = "https://winauth.com/current-beta-version.xml";
+		public const string WINAUTH_UPDATE_URL = "https://raw.githubusercontent.com/winauth/winauth/master/docs/current-beta-version.xml";
 #else
-		public const string WINAUTH_UPDATE_URL = "https://winauth.com/current-version.xml";
+    public const string WINAUTH_UPDATE_URL = "https://raw.githubusercontent.com/winauth/winauth/master/docs/current-version.xml";
 #endif
 
 		/// <summary>
@@ -145,7 +140,7 @@ namespace WinAuth
 			{new Tuple<string,string>("Itch.io", "ItchIcon.png")},
 			{new Tuple<string,string>("KickStarter", "KickStarterIcon.png")},
 			{new Tuple<string,string>("LastPass", "LastPassIcon.png")},
-			{new Tuple<string,string>("Name.io", "NameIcon.png")},
+			{new Tuple<string,string>("Name.com", "NameIcon.png")},
 			{new Tuple<string,string>("Teamviewer", "TeamviewerIcon.png")},
 			{new Tuple<string,string>("s7", string.Empty)},
 			{new Tuple<string,string>("Amazon", "AmazonIcon.png")},
@@ -171,7 +166,8 @@ namespace WinAuth
 			{new Tuple<string,string>("Twitter", "TwitterIcon.png")},
 			{new Tuple<string,string>("Wordpress", "WordpressIcon.png")},
 			{new Tuple<string,string>("Wordpress (B&W)", "WordpressWhiteIcon.png")},
-			{new Tuple<string,string>("Yahoo", "YahooIcon.png")}
+			{new Tuple<string,string>("Yahoo", "YahooIcon.png")},
+			{new Tuple<string,string>("Okta", "OktaVerifyAuthenticatorIcon.png")}
 		};
 
 		public static List<RegisteredAuthenticator> REGISTERED_AUTHENTICATORS = new List<RegisteredAuthenticator>
@@ -183,7 +179,8 @@ namespace WinAuth
 			new RegisteredAuthenticator {Name="Battle.Net", AuthenticatorType=RegisteredAuthenticator.AuthenticatorTypes.BattleNet, Icon="BattleNetAuthenticatorIcon.png"},
 			new RegisteredAuthenticator {Name="Guild Wars 2", AuthenticatorType=RegisteredAuthenticator.AuthenticatorTypes.GuildWars, Icon="GuildWarsAuthenticatorIcon.png"},
 			new RegisteredAuthenticator {Name="Glyph / Trion", AuthenticatorType=RegisteredAuthenticator.AuthenticatorTypes.Trion, Icon="GlyphIcon.png"},
-			new RegisteredAuthenticator {Name="Steam", AuthenticatorType=RegisteredAuthenticator.AuthenticatorTypes.Steam, Icon="SteamAuthenticatorIcon.png"}
+			new RegisteredAuthenticator {Name="Steam", AuthenticatorType=RegisteredAuthenticator.AuthenticatorTypes.Steam, Icon="SteamAuthenticatorIcon.png"},
+			new RegisteredAuthenticator {Name="Okta Verify", AuthenticatorType=RegisteredAuthenticator.AuthenticatorTypes.OktaVerify, Icon="OktaVerifyAuthenticatorIcon.png"}
 		};
 
 		public static ResourceManager StringResources = new ResourceManager(typeof(WinAuth.Resources.strings).FullName, typeof(WinAuth.Resources.strings).Assembly);
@@ -279,7 +276,7 @@ namespace WinAuth
 			LogException(e.ExceptionObject as Exception);
 		}
 
-		public static void LogException(Exception ex)
+		public static void LogException(Exception ex, bool silently = false)
 		{
 			// add catch for unknown application exceptions to try and get closer to bug
 			//StringBuilder capture = new StringBuilder(DateTime.Now.ToString("u") + " ");
@@ -297,20 +294,23 @@ namespace WinAuth
 			//}
 			//catch (Exception) { }
 
-			Logger.Error(ex);
-
 			try
 			{
-				ExceptionForm report = new ExceptionForm();
-				report.ErrorException = ex;
-				report.TopMost = true;
-				if (_form != null && _form.Config != null)
+				Logger.Error(ex);
+
+				if (silently == false)
 				{
-					report.Config = _form.Config;
-				}
-				if (report.ShowDialog() == DialogResult.Cancel)
-				{
-					Process.GetCurrentProcess().Kill();
+					ExceptionForm report = new ExceptionForm();
+					report.ErrorException = ex;
+					report.TopMost = true;
+					if (_form != null && _form.Config != null)
+					{
+						report.Config = _form.Config;
+					}
+					if (report.ShowDialog() == DialogResult.Cancel)
+					{
+						Process.GetCurrentProcess().Kill();
+					}
 				}
 			}
 			catch (Exception) { }

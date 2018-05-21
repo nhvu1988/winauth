@@ -14,7 +14,7 @@
     <TargetFrameworkProfile>
     </TargetFrameworkProfile>
     <IsWebBootstrapper>true</IsWebBootstrapper>
-    <AssemblyVersion>3.5.1.2</AssemblyVersion>
+    <AssemblyVersion>3.6.2.31</AssemblyVersion>
     <PrimaryVersionType>AssemblyVersionAttribute</PrimaryVersionType>
     <AssemblyInfoFilePath>Properties\AssemblyInfo.cs</AssemblyInfoFilePath>
     <UpdateAssemblyVersion>True</UpdateAssemblyVersion>
@@ -66,7 +66,7 @@
     <Optimize>false</Optimize>
     <OutputPath>..\Net4.5\bin\Debug\</OutputPath>
     <IntermediateOutputPath>..\Net4.5\obj\Debug\</IntermediateOutputPath>
-    <DefineConstants>TRACE;DEBUG;NETFX_4,NETFX_45</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;NETFX_4,NETFX_45,BETA</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <UseVSHostingProcess>true</UseVSHostingProcess>
@@ -78,7 +78,7 @@
     <Optimize>true</Optimize>
     <OutputPath>..\Net4.5\bin\Release\</OutputPath>
     <IntermediateOutputPath>..\Net4.5\obj\Release\</IntermediateOutputPath>
-    <DefineConstants>TRACE;NETFX_4,NETFX_45</DefineConstants>
+    <DefineConstants>TRACE;NETFX_4,NETFX_45,BETA</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
@@ -215,11 +215,22 @@
     <Compile Include="AddMicrosoftAuthenticator.designer.cs">
       <DependentUpon>AddMicrosoftAuthenticator.cs</DependentUpon>
     </Compile>
+    <Compile Include="AddOktaVerifyAuthenticator.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AddOktaVerifyAuthenticator.Designer.cs">
+      <DependentUpon>AddOktaVerifyAuthenticator.cs</DependentUpon>
+    </Compile>
     <Compile Include="Notification.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Notification.Designer.cs">
       <DependentUpon>Notification.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="ShowSteamTradesForm.cs">
       <SubType>Form</SubType>
@@ -257,11 +268,6 @@
     </Compile>
     <Compile Include="AddSteamAuthenticator.designer.cs">
       <DependentUpon>AddSteamAuthenticator.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="ShowSteamSecretForm.cs">
       <SubType>Form</SubType>
@@ -399,6 +405,9 @@
       <DependentUpon>AddMicrosoftAuthenticator.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="AddOktaVerifyAuthenticator.resx">
+      <DependentUpon>AddOktaVerifyAuthenticator.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Notification.resx">
       <DependentUpon>Notification.cs</DependentUpon>
     </EmbeddedResource>
@@ -481,8 +490,6 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <None Include="app.config" />
-    <None Include="ClassDiagram1.cd" />
-    <None Include="packages.config" />
     <None Include="packages.WinAuth.config" />
     <None Include="Properties\app.manifest" />
     <None Include="Properties\Settings.settings">
@@ -590,6 +597,7 @@
     <EmbeddedResource Include="Resources\WinAuthIcon.gif" />
     <EmbeddedResource Include="Resources\WordpressWhiteIcon.png" />
     <EmbeddedResource Include="Resources\ChromeIcon.png" />
+    <EmbeddedResource Include="Resources\OktaVerifyAuthenticatorIcon.png" />
     <Content Include="winauth.ico" />
   </ItemGroup>
   <ItemGroup>
