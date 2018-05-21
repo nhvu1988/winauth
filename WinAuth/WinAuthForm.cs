@@ -2229,7 +2229,7 @@ namespace WinAuth
 				// because of window size, we only show first 30.
 				// @todo change to MRU
 				var index = 1;
-				foreach (var auth in this.Config.Take(30))
+				foreach (var auth in this.Config)
 				{
 					menuitem = new ToolStripMenuItem(index.ToString() + ". " + auth.Name);
 					menuitem.Name = "authenticatorOptionsMenuItem_" + index;
@@ -2275,10 +2275,10 @@ namespace WinAuth
 			//	menu.Items.Add(new ToolStripSeparator());
 			//}
 
-			menuitem = new ToolStripMenuItem(strings.MenuAbout + "...");
-			menuitem.Name = "aboutOptionsMenuItem";
-			menuitem.Click += aboutOptionMenuItem_Click;
-			menu.Items.Add(menuitem);
+			//menuitem = new ToolStripMenuItem(strings.MenuAbout + "...");
+			//menuitem.Name = "aboutOptionsMenuItem";
+			//menuitem.Click += aboutOptionMenuItem_Click;
+			//menu.Items.Add(menuitem);
 
 			menu.Items.Add(new ToolStripSeparator());
 
