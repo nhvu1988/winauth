@@ -1,4 +1,7 @@
-﻿namespace WinAuth
+﻿using System;
+using System.Windows.Forms;
+
+namespace WinAuth
 {
 	using MetroFramework;
 	using MetroFramework.Forms;
@@ -114,6 +117,10 @@
 			this.notifyMenu.Name = "notifyMenu";
 			this.notifyMenu.Size = new System.Drawing.Size(61, 4);
 			this.notifyMenu.Opening += new System.ComponentModel.CancelEventHandler(this.notifyMenu_Opening);
+            this.notifyMenu.Opened += NotifyMenuOnOpened;
+            this.notifyMenu.Closing += NotifyMenuOnClosing;
+            this.notifyMenu.MouseWheel += NotifyMenuOnMouseWheel;
+            
 			// 
 			// passwordTimer
 			// 
@@ -385,7 +392,9 @@
 
     }
 
-		#endregion
+     
+
+      #endregion
 
 		private MetroFramework.Components.MetroStyleManager metroStyleManager;
 		private MetroFramework.Components.MetroStyleExtender metroStyleExtender;
